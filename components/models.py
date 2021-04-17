@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from sqlalchemy import PrimaryKeyConstraint
 
-from components import db, login_manager
+from components import db
 
 
 class User(db.Model, UserMixin):
@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
         PrimaryKeyConstraint('id'),
     )
 
-    id = db.Column(db.Integer, autoincrement=True)
-    login = db.Column(db.String)
+    id = db.Column(db.Integer, autoincrement=True, unique=True)
+    login = db.Column(db.String, nullable=True, unique=True)
+    email = db.Column(db.String, nullable=True, unique=True)
     password = db.Column(db.String, nullable=True)

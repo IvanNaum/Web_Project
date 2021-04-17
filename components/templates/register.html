@@ -6,36 +6,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Tailwind CSS -->
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
 </head>
 
 <body>
+    <div class="flex justify-center items-center h-screen">
+        <form method="post">
+            <h2 class="text-2xl">Регистрация</h2>
+            <div class="flex space-x-2 ">
+                <div>
+                    <div class="input-field">
+                        <input id="email" type="email" class="validate" name="email" required>
+                        <label for="email">Почта</label>
+                    </div>
+                    <div class="input-field">
+                        <input id="login" type="text" class="validate" name="login" required>
+                        <label for="login">Логин</label>
+                    </div>
+                </div>
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+                <div>
+                    <div class="input-field">
+                        <input id="password1" type="password" class="validate" name="password1" required>
+                        <label for="password1">Пароль</label>
+                    </div>
+                    <div class="input-field">
+                        <input id="password2" type="password" class="validate" name="password2" required>
+                        <label for="password2">Пароль ещё раз</label>
+                    </div>
+                </div>
+            </div>
 
-    <form action="" method="post">
-        <h3>Регистрация</h3>
-        <div>
-            <label for="login">Логин</label>
-            <input type="text" id="login" name="login">
-        </div>
-        <div>
-            <label for="password1">Пароль</label>
-            <input type="text" id="password1" name="password1">
-        </div>
-        <div>
-            <label for="password2">Пароль ещё раз</label>
-            <input type="text" id="password2" name="password2">
-        </div>
-        <input type="submit">
-    </form>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="text-red-500 mb-5">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            
+            <div class="flex justify-between items-center">
+                <button class="btn waves-effect waves-light px-12" type="submit">
+                    Войти
+                </button>
+
+                <div class="text-sm">
+                    Уже зарегистрированы?
+                    <a href="/login" class="text-blue-500 hover:underline">Войдите</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 
 </html>

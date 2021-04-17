@@ -1,5 +1,5 @@
-from flask import request, render_template, url_for, flash
-from flask_login import login_user, logout_user, current_user
+from flask import request, render_template, flash
+from flask_login import login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import redirect
 
@@ -9,7 +9,6 @@ from components.models import User
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
-
     if request.method == 'POST':
         login, password = request.form.get('login'), request.form.get('password')
 
@@ -33,20 +32,21 @@ def login_page():
 def register_page():
     if request.method == 'POST':
         login = request.form.get('login')
+        email = request.form.get('email')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        if not all((login, password1, password2)):
+        if not all((login, email, password1, password2)):
             flash('Заполните все обязательные поля')
         elif password1 != password2:
             flash('Пароли не совпадают')
         else:
             hash_password = generate_password_hash(password1)
-            user = User(login=login, password=hash_password)
+            user = User(login=login, password=hash_password, email=email)
             db.session.add(user)
             db.session.commit()
 
-        return redirect('/')
+            return redirect('/login')
 
     return render_template('register.html')
 
