@@ -1,7 +1,7 @@
 from components.checkers.piece import Piece
 
 
-class Bord:
+class Board:
     SIZE = 8
     WHITE = 'W'
     BLACK = 'B'
