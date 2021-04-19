@@ -14,8 +14,8 @@ class Board:
         for item, color in enumerate([self.WHITE, self.BLACK]):
             for i in range(3):
                 for j in range((i + item) % 2, self.SIZE, 2):
-                    self.board = self.board[::-1]
-                    self.board[i][j] = Piece(color)
+                    self.border[i][j] = Piece(color)
+            self.border = self.border[::-1]
 
     def check_pos(self, y, x):
         return x < self.SIZE and y < self.SIZE
@@ -63,9 +63,9 @@ class Board:
         pass
 
     def __str__(self):
-        return '\n'.join([' | '.join(str(j) for j in i) for i in self.board])
+        return '\n'.join([' | '.join(str(j).center(6, ' ') for j in i) for i in self.border])
 
 
 if __name__ == '__main__':
-    bord = Board()
-    print(bord)
+    board = Board()
+    print(board)
