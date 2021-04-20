@@ -13,4 +13,4 @@ socket = SocketIO(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
-from components import main_page, models, authorization
+from components import main_page, models, authorization, checkers
