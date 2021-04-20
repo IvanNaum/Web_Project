@@ -1,5 +1,5 @@
 from flask import request, render_template, flash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import redirect
 
@@ -52,9 +52,10 @@ def register_page():
 
 
 @app.route('/logout', methods=['GET'])
+@login_required
 def logout_page():
     logout_user()
-    return render_template('index.html')
+    return redirect('/')
 
 
 @login_manager.user_loader

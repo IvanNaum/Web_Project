@@ -4,9 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Игра</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body>
+
+    <div class="flex items-center justify-center h-screen mx-auto">
+        {% if current_user.is_authenticated %}
+        <div class="border-2 border-black">
+            {% for i in range(8) %}
+            <div class="flex">
+                {% for j in range(8) %}
+
+                <div class="flex justify-center items-center w-20 h-20  
+                {% if (i + j % 2) % 2 == 1 %} bg-black black {% else %} bg-white {% endif %}">
+                    {% if board.get_board()[::-1][i][j] %}
+                    <div
+                        class="piece flex justify-center items-center w-5/6 h-5/6 rounded-full 
+                    {% if board.get_board()[::-1][i][j].color == board.BLACK %} bg-blue-500 text-white {% else %} bg-white text-black {% endif %}">
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        Вы не авторизованный пользователь
+        {% endif %}
+    </div>
+
+    <!-- DRUG and DROP -->
+    <script src="{{ url_for('static', filename='js/drag_and_drop.js') }}"></script>
 
     <!-- Подключение Socket.io -->
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"
