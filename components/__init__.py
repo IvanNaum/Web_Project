@@ -15,13 +15,12 @@ socket = SocketIO(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
-# Список словарей с информацией о игровых комнатах
+
+from components.models import User
+
+# Список с информацией о игровых комнатах
 sessions = [
-    {
-        'user1': 1,
-        'user2': 3,
-        'board': Board()
-    }
+    Board(User.query.filter_by(id=1).first(), User.query.filter_by(id=3).first())
 ]
 
 from components import main_page, models, authorization, game

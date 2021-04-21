@@ -11,6 +11,7 @@ def test(data):
 
 @app.route('/game')
 def game_page():
-    sess = list(filter(lambda x: x['user1'] == current_user.id, sessions))[0]
-    board = sess['board']
-    return render_template('game.html', current_user=current_user, board=board)
+    user = current_user
+    sess = list(filter(lambda x: user in x.get_users(), sessions))[0]
+    board, user_color = sess.get_data_by_user(user)
+    return render_template('game.html', current_user=user, board=board, user_color=user_color, WHITE=sess.WHITE)

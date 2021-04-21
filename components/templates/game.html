@@ -18,10 +18,11 @@
 
                 <div class="flex justify-center items-center w-20 h-20  
                 {% if (i + j % 2) % 2 == 1 %} bg-black black {% else %} bg-white {% endif %}">
-                    {% if board.get_board()[::-1][i][j] %}
+                    {% if board[i][j] %}
                     <div
-                        class="piece flex justify-center items-center w-5/6 h-5/6 rounded-full 
-                    {% if board.get_board()[::-1][i][j].color == board.BLACK %} bg-blue-500 text-white {% else %} bg-white text-black {% endif %}">
+                        class="flex justify-center items-center w-5/6 h-5/6 rounded-full 
+                    {% if board[i][j].color == user_color %} piece {% endif %} {% if board[i][j].color == WHITE %} bg-white text-black {% else %} bg-blue-500 text-white {% endif %}"
+                    id="{{i}}-{{j}}">
                     </div>
                     {% endif %}
                 </div>

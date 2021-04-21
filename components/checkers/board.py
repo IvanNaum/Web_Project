@@ -6,7 +6,10 @@ class Board:
     WHITE = 'W'
     BLACK = 'B'
 
-    def __init__(self):
+    def __init__(self, user1, user2):
+        self.user1 = user1
+        self.user2 = user2
+
         self.board = [[None] * self.SIZE for _ in range(self.SIZE)]
         self.cur_color = self.WHITE
 
@@ -67,6 +70,15 @@ class Board:
 
     def get_board(self):
         return self.board.copy()
+
+    def get_data_by_user(self, user):
+        if user == self.user1:
+            return self.board.copy()[::-1], self.WHITE
+        elif user == self.user2:
+            return list(map(lambda x: x[::-1], self.board.copy())), self.BLACK
+
+    def get_users(self):
+        return self.user1, self.user2
 
 
 if __name__ == '__main__':
