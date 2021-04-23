@@ -3,7 +3,7 @@ from flask_login import LoginManager
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 
-from components.checkers.board import Board
+from components.checkers.session import Session
 
 app = Flask(__name__)
 app.secret_key = 'secret string'
@@ -15,12 +15,11 @@ socket = SocketIO(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
-
 from components.models import User
 
 # Список с информацией о игровых комнатах
 sessions = [
-    Board(User.query.filter_by(id=1).first(), User.query.filter_by(id=3).first())
+    Session(User.query.filter_by(id=1).first(), User.query.filter_by(id=3).first())
 ]
 
 from components import main_page, models, authorization, game

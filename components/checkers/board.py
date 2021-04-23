@@ -1,30 +1,26 @@
+import constants
 from components.checkers.piece import Piece
 
 
 class Board:
-    SIZE = 8
-    WHITE = 'W'
-    BLACK = 'B'
+    def __init__(self):
 
-    def __init__(self, user1, user2):
-        self.user1 = user1
-        self.user2 = user2
-
-        self.board = [[None] * self.SIZE for _ in range(self.SIZE)]
-        self.cur_color = self.WHITE
+        self.board = [[None] * constants.SIZE for _ in range(constants.SIZE)]
+        self.cur_color = constants.WHITE
 
         # Заполнение поля
-        for item, color in enumerate([self.WHITE, self.BLACK]):
+        for item, color in enumerate([constants.WHITE, constants.BLACK]):
             for i in range(3):
-                for j in range((i + item) % 2, self.SIZE, 2):
+                for j in range((i + item) % 2, constants.SIZE, 2):
                     self.board[i][j] = Piece(color)
             self.board = self.board[::-1]
 
     def __str__(self):
         return '\n'.join([' | '.join(str(j).center(6, ' ') for j in i) for i in self.board])
 
-    def check_pos(self, y, x):
-        return x < self.SIZE and y < self.SIZE
+    @staticmethod
+    def check_pos(y, x):
+        return x < constants.SIZE and y < constants.SIZE
 
     def check_color(self, y, x):
         element = self.board[y][x]
@@ -70,15 +66,6 @@ class Board:
 
     def get_board(self):
         return self.board.copy()
-
-    def get_data_by_user(self, user):
-        if user == self.user1:
-            return self.board.copy()[::-1], self.WHITE
-        elif user == self.user2:
-            return list(map(lambda x: x[::-1], self.board.copy())), self.BLACK
-
-    def get_users(self):
-        return self.user1, self.user2
 
 
 if __name__ == '__main__':
