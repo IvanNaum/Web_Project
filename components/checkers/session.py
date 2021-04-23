@@ -21,7 +21,7 @@ class Session:
     def get_users(self):
         return self.user1, self.user2
 
-    def get_peaces(self, user):
+    def get_pieces(self, user):
         pieces = []
 
         board, color = self.get_data_by_user(user)

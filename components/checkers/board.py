@@ -37,14 +37,6 @@ class Board:
         return self.board[y][x] is None
 
     def check_move(self, from_y, from_x, to_y, to_x):
-        """
-        Проверяет возможность хода в целом
-        :param from_y:
-        :param from_x:
-        :param to_y:
-        :param to_x:
-        :return:
-        """
         if all([
             self.check_pos(from_y, from_x),
             self.check_pos(to_y, to_x),
@@ -66,8 +58,3 @@ class Board:
 
     def get_board(self):
         return self.board.copy()
-
-
-if __name__ == '__main__':
-    board = Board()
-    print(board)

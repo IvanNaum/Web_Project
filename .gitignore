@@ -1,8 +1,7 @@
 .idea
 venv
-.env
+
+**/.env
 **/__pycache__
-
-components/data.db
-
-ngrok
+**/*.db
+**/ngrok

@@ -1,7 +1,6 @@
-from flask import request, render_template, flash
+from flask import request, render_template, flash, redirect
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import redirect
 
 from components import app, db, login_manager
 from components.models import User

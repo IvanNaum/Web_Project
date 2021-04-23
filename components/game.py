@@ -10,7 +10,7 @@ from components import socket, app, sessions
 def get_pieces():
     sess = list(filter(lambda x: current_user in x.get_users(), sessions))[0]
 
-    board, color = sess.get_peaces(current_user)
+    board, color = sess.get_pieces(current_user)
     emit('pieces', {'board': board,
                     'user_color': color,
                     'black': constants.BLACK,
