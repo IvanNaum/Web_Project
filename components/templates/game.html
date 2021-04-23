@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Игра</title>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -17,14 +17,7 @@
                 {% for j in range(8) %}
 
                 <div class="flex justify-center items-center w-20 h-20  
-                {% if (i + j % 2) % 2 == 1 %} bg-black black {% else %} bg-white {% endif %}">
-                    {% if board[i][j] %}
-                    <div
-                        class="flex justify-center items-center w-5/6 h-5/6 rounded-full 
-                    {% if board[i][j].color == user_color %} piece {% endif %} {% if board[i][j].color == WHITE %} bg-white text-black {% else %} bg-blue-500 text-white {% endif %}"
-                    id="{{i}}-{{j}}">
-                    </div>
-                    {% endif %}
+                {% if (i + j % 2) % 2 == 1 %} bg-black black {% else %} bg-white {% endif %}" id="{{i}}-{{j}}">
                 </div>
 
                 {% endfor %}
@@ -36,7 +29,10 @@
         {% endif %}
     </div>
 
-    <!-- DRUG and DROP -->
+    <!-- Draw functions -->
+    <script src="{{ url_for('static', filename='js/draw_pieces.js') }}"></script>
+
+    <!-- DRAG and DROP -->
     <script src="{{ url_for('static', filename='js/drag_and_drop.js') }}"></script>
 
     <!-- Подключение Socket.io -->
@@ -46,7 +42,12 @@
     <script type="text/javascript" charset="utf-8">
         var socket = io();
         socket.on('connect', function () {
-            socket.emit('my event', { data: 'I\'m connected!' });
+            socket.emit('pieces');
+        });
+
+        socket.on('pieces', function (pieces) {
+            drawPieces(pieces.board, pieces.black, pieces.white, pieces.user_color);
+            dragDrop();
         });
     </script>
 </body>

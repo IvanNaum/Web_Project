@@ -1,4 +1,4 @@
-(function dragDrop() {
+function dragDrop() {
     const piecesElements = document.querySelectorAll(".piece");
     const blacksElements = document.querySelectorAll(".black");
 
@@ -9,19 +9,11 @@
 
         elem.addEventListener("dragstart", (e => {
             e.dataTransfer.setData("text/html", "dragstart");
-            element = e.target
+            element = e.target;
         }));
-        // elem.addEventListener("drag", (e => {
-        //     console.log('drag')
-        // }));
-        // elem.addEventListener("dragend", (e => {
-        //     console.log('dragend')
-        // }));
     })
+
     blacksElements.forEach(elem => {
-        // elem.addEventListener("dragenter", (e => {
-        //     console.log('dragenter')
-        // }));
         elem.addEventListener("dragover", (e => {
             e.preventDefault();
         }));
@@ -31,5 +23,5 @@
             }
         }));
     })
-})();
+};
 

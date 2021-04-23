@@ -1,5 +1,6 @@
 import constants
 from components.checkers.board import Board
+from components.checkers.piece import Piece
 
 
 class Session:
@@ -19,3 +20,18 @@ class Session:
 
     def get_users(self):
         return self.user1, self.user2
+
+    def get_peaces(self, user):
+        pieces = []
+
+        board, color = self.get_data_by_user(user)
+        for i, row in enumerate(board):
+            for j, item in enumerate(row):
+                if type(item) == Piece:
+                    pieces.append({
+                        'color': item.color,
+                        'is_queen': item.is_queen,
+                        'row': i,
+                        'col': j
+                    })
+        return pieces, color
