@@ -25,7 +25,7 @@ from components.models import User
 
 # Список с информацией о игровых комнатах
 sessions = [
-    Session(User.query.filter_by(id=1).first(), User.query.filter_by(id=2).first())
+    Session(User.query.filter_by(id=1).first(), User.query.filter_by(id=3).first())
 ]
 
 from components import main_page, authorization, game

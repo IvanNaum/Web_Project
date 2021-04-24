@@ -6,6 +6,12 @@ import constants
 from components import socket, app, sessions
 
 
+def find_session(user):
+    sess = list(filter(lambda x: user in x.get_users(), sessions))
+    if sess:
+        return sess[0]
+
+
 @socket.on('pieces')
 def get_pieces():
     sess = list(filter(lambda x: current_user in x.get_users(), sessions))[0]
@@ -17,9 +23,15 @@ def get_pieces():
                     'white': constants.WHITE})
 
 
+@socket.on('step')
+def step(data):
+    print(data)
+    # get_pieces()
+
+
 @app.route('/game')
 def game_page():
-    sess = list(filter(lambda x: current_user in x.get_users(), sessions))[0]
+    sess = find_session(current_user)
     board, user_color = sess.get_data_by_user(current_user)
     return render_template('game.html', current_user=current_user, board=board,
                            user_color=user_color, WHITE=constants.WHITE)

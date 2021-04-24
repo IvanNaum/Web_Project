@@ -1,12 +1,20 @@
 function drawPieces(pieces, black, white, user_color) {
+
+    // Clear board
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            var cell = document.getElementById(`${i}-${j}`);
+            cell.innerHTML = "";
+        }   
+    }
+
+    // Draw new pieces
     pieces.forEach(element => {
         color = element.color;
         row = element.row;
         col = element.col;
 
         var cell = document.getElementById(`${row}-${col}`);
-        // Clear cell
-        cell.innerHTML = "";
 
         var piece = document.createElement("div");
 
