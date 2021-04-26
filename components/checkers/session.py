@@ -4,13 +4,16 @@ from components.checkers.piece import Piece
 
 
 class Session:
-    def __init__(self, user1, user2):
+    def __init__(self, user1):
         self.user1 = user1
-        self.user2 = user2
+        self.user2 = None
 
         self.is_close = False
 
         self.board = Board()
+
+    def set_user2(self, user):
+        self.user2 = user
 
     def get_data_by_user(self, user):
         if user == self.user1:

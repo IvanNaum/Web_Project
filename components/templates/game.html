@@ -8,8 +8,8 @@
 </head>
 
 <body>
-
-    <div class="flex items-center justify-center h-screen mx-auto">
+    <div class="flex items-center justify-center flex-col h-screen mx-auto">
+        <h1 id="message"></h1>
         {% if current_user.is_authenticated %}
         <div class="border-2 border-black">
             {% for i in range(8) %}
@@ -39,13 +39,20 @@
         var intervalUpdate
 
         socket.on('connect', function () {
-            socket.emit("pieces");
-            intervalUpdate = setInterval(function () { socket.emit('pieces'); }, 5000);
+            socket.emit("data");
+            intervalUpdate = setInterval(function () { socket.emit('data'); }, 3000);
         });
 
-        socket.on('pieces', function (pieces) {
-            drawPieces(pieces.board, pieces.black, pieces.white, pieces.user_color);
-            dragDrop();
+        socket.on('data', function (data) {
+            console.log(data.message);
+            var message = document.getElementById("message");
+            if (!data.message) {
+                drawPieces(data.board, data.black, data.white, data.user_color);
+                dragDrop();
+                message.innerHTML = "";
+            } else {
+                message.innerHTML = data.message;
+            };
         });
     </script>
 

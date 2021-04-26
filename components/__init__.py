@@ -24,8 +24,10 @@ db.create_all()
 from components.models import User
 
 # Список с информацией о игровых комнатах
+sess = Session(User.query.filter_by(id=1).first())
+# sess.set_user2(User.query.filter_by(id=3).first())
 sessions = [
-    Session(User.query.filter_by(id=1).first(), User.query.filter_by(id=3).first())
+    sess
 ]
 
 from components import main_page, authorization, game

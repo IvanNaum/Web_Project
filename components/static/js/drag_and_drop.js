@@ -22,7 +22,7 @@ function dragDrop() {
         elem.addEventListener("drop", (e => {
             if (!e.target.innerHTML.trim() && e.target.classList.contains('black')) {
                 e.target.appendChild(element.target);
-
+                element = null;
                 document.getElementById(id_start_cell).innerHTML = "";
 
                 let [from_x, from_y] = id_start_cell.split("-");
