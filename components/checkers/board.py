@@ -1,5 +1,7 @@
 from components.checkers.piece import Piece
 import constants
+from itertools import product
+from math import copysign
 
 
 class Board:
@@ -30,7 +32,7 @@ class Board:
 
     @staticmethod
     def check_same_diagonal(from_y, from_x, to_y, to_x):
-        return abs(from_x - from_y) == abs(to_x - to_y)
+        return from_y + from_x == to_y + to_x or from_y - from_x == to_y - to_x
 
     def check_color(self, y, x):
         if not self.check_piece(y, x):
@@ -39,75 +41,54 @@ class Board:
         piece: Piece = self.board[y][x]
         return self.color == piece.color
 
-    def check_dir_y(self, from_y, from_x, to_y, to_x):
-        if not self.check_color(from_y, from_x):
-            return False
-
-        piece: Piece = self.board[from_y][from_x]
-        if piece.is_queen:
-            return True
-
-        dir_y = self.get_dir_y(from_y, to_y)
-        return dir_y == piece.dir_y
-
-    def check_move(self, from_y, from_x, to_y, to_x):
-        if (
-            self.check_piece(from_y, from_x)
-            and self.check_empty(to_y, to_x)
-            and self.check_color(from_y, from_x)
-            and self.check_same_diagonal(from_y, from_x, to_y, to_x)
-        ):
-            piece: Piece = self.board[from_y][from_x]
-            if piece.is_queen:
-                return True
-
-            if not self.check_dir_y(from_y, from_x, to_y, to_x):
-                return False
-
-            eaten_pieces_count = len(
-                self.get_eaten_pieces_positions(from_y, from_x, to_y, to_x))
-            return eaten_pieces_count + 1 == abs(from_x - to_x) == abs(from_y - from_y)
-
     @staticmethod
     def get_dir_y(from_y, to_y):
-        return (to_y - from_y) // abs(to_y - from_y)
+        return int(copysign(1, to_y - from_y))
 
-    @staticmethod
-    def get_dir_x(from_x, to_x):
-        return (to_x - from_x) // abs(to_x - from_x)
+    def get_possible_moves(self, from_y, from_x):
+        possible_moves = []
 
-    def get_eaten_pieces_positions(self, from_y, from_x, to_y, to_x):
-        eaten_pieces_positions = []
+        if not self.check_color(from_y, from_x):
+            return possible_moves
 
-        dir_y = self.get_dir_y(from_y, to_y)
-        dir_x = self.get_dir_x(from_x, to_x)
+        piece: Piece = self.board[from_y][from_x]
 
-        for n in range(1, abs(to_x - from_x)):
-            # смещение по осям пропорционально (1:1),
-            # поэтому достаточно одной переменной
-            y = to_y + dir_y * n
-            x = to_x + dir_x * n
-            if self.check_piece(y, x):
-                eaten_pieces_positions.append((y, x))
+        for to_y, to_x in product(range(constants.SIZE), repeat=2):
+            if not (
+                self.check_empty(to_y, to_x)
+                and self.check_same_diagonal(from_y, from_x, to_y, to_x)
+            ):
+                continue
 
-        return eaten_pieces_positions
+            if not piece.is_queen:
+                if abs(to_y - from_y) == 1:
+                    dir_y = self.get_dir_y(from_y, to_y)
+                    if dir_y == piece.dir_y:
+                        possible_moves.append((to_y, to_x))
+
+                elif abs(to_y - from_y) == 2:
+                    mid_y = (to_y + from_y) // 2
+                    mid_x = (to_x + from_x) // 2 
+                    if self.check_piece(mid_y, mid_x) and not self.check_color(mid_y, mid_x):
+                        possible_moves.append((to_y, to_x))
+
+            else:
+                pass
+                # TODO
+
+        return possible_moves
+
+    def can_move(self, from_y, from_x, to_y, to_x):
+        return (to_y, to_x) in self.get_possible_moves(from_y, from_x)
 
     def move(self, from_y, from_x, to_y, to_x):
-        if self.check_move(from_y, from_x, to_y, to_x):
+        if self.can_move(from_y, from_x, to_y, to_x):
             piece: Piece = self.board[from_y][from_x]
 
-            for y, x in [(from_y, from_x), *self.get_eaten_pieces_positions(from_y, from_x, to_y, to_x)]:
-                self.board[y][x] = None
-
+            self.board[from_y][from_x] = None
             self.board[to_y][to_x] = piece
 
             self.change_color()
 
-    def get_board(self):
-        return self.board.copy()
-
     def change_color(self):
-        if self.color == constants.WHITE:
-            self.color = constants.BLACK
-        else:
-            self.color = constants.WHITE
+        self.color = constants.WHITE if self.color == constants.BLACK else constants.BLACK
