@@ -40,16 +40,20 @@
 
         socket.on('connect', function () {
             socket.emit("data");
-            intervalUpdate = setInterval(function () { socket.emit('data'); }, 3000);
+            intervalUpdate = setInterval(function () { socket.emit('data'); }, 500);
         });
 
         socket.on('data', function (data) {
-            console.log(data.message);
             var message = document.getElementById("message");
             if (!data.message) {
                 drawPieces(data.board, data.black, data.white, data.user_color);
                 dragDrop();
-                message.innerHTML = "";
+                if (data.user_color === data.step_color) {
+                    message.innerHTML = "Ваш ход";
+                } else if (data.user_color !== data.step_color) {
+                    message.innerHTML = "Ход соперника";
+                };
+                
             } else {
                 message.innerHTML = data.message;
             };

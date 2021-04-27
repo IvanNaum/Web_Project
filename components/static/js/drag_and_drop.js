@@ -20,13 +20,13 @@ function dragDrop() {
             e.preventDefault();
         }));
         elem.addEventListener("drop", (e => {
-            if (!e.target.innerHTML.trim() && e.target.classList.contains('black')) {
+            if (!e.target.innerHTML.trim() && e.target.classList.contains('black') &&  element) {
                 e.target.appendChild(element.target);
                 element = null;
                 document.getElementById(id_start_cell).innerHTML = "";
 
-                let [from_x, from_y] = id_start_cell.split("-");
-                let [to_x, to_y] = e.target.id.split("-");
+                let [from_y, from_x] = id_start_cell.split("-");
+                let [to_y, to_x] = e.target.id.split("-");
 
                 socket.emit('step', {
                     "from_x": parseInt(from_x),
