@@ -17,9 +17,9 @@ class Session:
 
     def get_data_by_user(self, user):
         if user == self.user1:
-            return self.board.get_board()[::-1], constants.WHITE
+            return self.board.board[::-1], constants.WHITE
         elif user == self.user2:
-            return list(map(lambda x: x[::-1], self.board.get_board())), constants.BLACK
+            return [row[::-1] for row in self.board.board], constants.BLACK
 
     def get_users(self):
         return self.user1, self.user2

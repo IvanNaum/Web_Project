@@ -8,4 +8,4 @@ class Piece:
         self.is_queen = False
 
     def __str__(self):
-        return f'{self.color}p'
+        return self.color
