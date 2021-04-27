@@ -54,9 +54,10 @@ class Board:
         piece: Piece = self.board[from_y][from_x]
 
         for to_y, to_x in product(range(constants.SIZE), repeat=2):
-            if not (
-                self.check_empty(to_y, to_x)
-                and self.check_same_diagonal(from_y, from_x, to_y, to_x)
+            if (
+                self.check_piece(to_y, to_x) 
+                or not self.check_same_diagonal(from_y, from_x, to_y, to_x)
+                or (from_y, from_x) == (to_y, to_x)
             ):
                 continue
 
@@ -68,7 +69,7 @@ class Board:
 
                 elif abs(to_y - from_y) == 2:
                     mid_y = (to_y + from_y) // 2
-                    mid_x = (to_x + from_x) // 2 
+                    mid_x = (to_x + from_x) // 2
                     if self.check_piece(mid_y, mid_x) and not self.check_color(mid_y, mid_x):
                         possible_moves.append((to_y, to_x))
 
@@ -78,6 +79,15 @@ class Board:
 
         return possible_moves
 
+    def get_eaten_pieces(self, from_y, from_x, to_y, to_x):
+        eaten_pieces = []
+        if abs(to_y - from_y) == 2:
+            mid_y = (to_y + from_y) // 2
+            mid_x = (to_x + from_x) // 2
+            if self.check_piece(mid_y, mid_x) and not self.check_color(mid_y, mid_x):
+                eaten_pieces.append((mid_y, mid_x))
+        return eaten_pieces
+
     def can_move(self, from_y, from_x, to_y, to_x):
         return (to_y, to_x) in self.get_possible_moves(from_y, from_x)
 
@@ -86,9 +96,28 @@ class Board:
             piece: Piece = self.board[from_y][from_x]
 
             self.board[from_y][from_x] = None
+
+            for y, x in self.get_eaten_pieces(from_y, from_x, to_y, to_x):
+                self.board[y][x] = None
+
             self.board[to_y][to_x] = piece
 
             self.change_color()
 
+            winner = self.check_win()
+            return winner
+
+    def check_win(self):
+        for from_y, from_x in product(range(constants.SIZE), repeat=2):
+            if self.check_color(from_y, from_x):
+                for to_y, to_x in product(range(constants.SIZE), repeat=2):
+                    if self.can_move(from_y, from_x, to_y, to_x):
+                        return
+
+        return self.dif_color()
+
+    def dif_color(self):
+        return constants.WHITE if self.color == constants.BLACK else constants.BLACK
+
     def change_color(self):
-        self.color = constants.WHITE if self.color == constants.BLACK else constants.BLACK
+        self.color = self.dif_color()
