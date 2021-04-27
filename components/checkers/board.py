@@ -23,8 +23,12 @@ class Board:
                 self.board[y][x] = Piece(color)
 
     def __str__(self):
-        return '\n'.join(
-            [' | '.join(str(el).center(6, ' ') for el in row) for row in self.board])
+        fmt_board = []
+        for row in self.board:
+            fmt_row = '| ' + ' | '.join(str(el or ' ') for el in row) + ' |'
+            fmt_board.append('-' * len(fmt_row))
+            fmt_board.append(fmt_row)
+        return '\n'.join(fmt_board)
 
     def get_board(self):
         return self.board.copy()
