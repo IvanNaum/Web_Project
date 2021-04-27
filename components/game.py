@@ -26,22 +26,23 @@ def get_data():
 
     sess = find_session(current_user)
     if sess.user2:
-        board, color = sess.get_pieces(current_user)
+        board, color, step_color = sess.get_pieces(current_user)
         emit('data', {'board': board,
                       'user_color': color,
                       'black': constants.BLACK,
-                      'white': constants.WHITE})
+                      'white': constants.WHITE,
+                      'step_color': step_color})
     else:
         emit('data', {'message': 'Противник ещё не найден'})
 
 
 @socket.on('step')
 def step(data):
-    if find_session(current_user):
+    sess = find_session(current_user)
+    if sess:
         from_x, from_y = data['from_x'], data['from_y']
         to_x, to_y = data['to_x'], data['to_y']
-
-        ...
+        sess.move(from_x, from_y, to_x, to_y, current_user)
 
 
 @app.route('/game')
@@ -63,8 +64,5 @@ def game_page():
         else:
             # Если нет, создаем новую комнату
             sessions.append(Session(User.query.filter_by(id=current_user.id).first()))
-        sess = find_session(current_user)
 
-    board, user_color = sess.get_data_by_user(current_user)
-    return render_template('game.html', current_user=current_user, board=board,
-                           user_color=user_color, WHITE=constants.WHITE)
+    return render_template('game.html', current_user=current_user)

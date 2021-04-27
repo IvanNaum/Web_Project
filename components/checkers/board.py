@@ -1,7 +1,8 @@
-from components.checkers.piece import Piece
-import constants
 from itertools import product
 from math import copysign
+
+import constants
+from components.checkers.piece import Piece
 
 
 class Board:
@@ -28,6 +29,9 @@ class Board:
             fmt_board.append('-' * len(fmt_row))
             fmt_board.append(fmt_row)
         return '\n'.join(fmt_board)
+
+    def get_board(self):
+        return self.board.copy()
 
     def check_piece(self, y, x):
         return type(self.board[y][x]) == Piece
@@ -60,9 +64,9 @@ class Board:
 
         for to_y, to_x in product(range(constants.SIZE), repeat=2):
             if (
-                self.check_piece(to_y, to_x) 
-                or not self.check_same_diagonal(from_y, from_x, to_y, to_x)
-                or (from_y, from_x) == (to_y, to_x)
+                    self.check_piece(to_y, to_x)
+                    or not self.check_same_diagonal(from_y, from_x, to_y, to_x)
+                    or (from_y, from_x) == (to_y, to_x)
             ):
                 continue
 

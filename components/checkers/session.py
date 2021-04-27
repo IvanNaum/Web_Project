@@ -37,4 +37,12 @@ class Session:
                         'row': i,
                         'col': j
                     })
-        return pieces, color
+        return pieces, color, self.board.color
+
+    def move(self, from_x, from_y, to_x, to_y, user):
+        if user == self.user1:
+            self.board.move(constants.SIZE - from_y - 1, from_x,
+                            constants.SIZE - to_y - 1, to_x)
+        elif user == self.user2:
+            self.board.move(from_y, constants.SIZE - from_x - 1,
+                            to_y, constants.SIZE - to_x - 1)
