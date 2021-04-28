@@ -4,3 +4,5 @@ flask-socketio==5.0.1
 flask-sqlalchemy==2.5.1
 eventlet==0.30.2
 python-dotenv==0.17.0
+flask-wtf==0.14.3
+email-validator==1.1.2

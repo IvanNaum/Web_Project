@@ -67,3 +67,9 @@ def game_page():
             sessions.append(Session(User.query.filter_by(id=current_user.id).first()))
 
     return render_template('game.html')
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
