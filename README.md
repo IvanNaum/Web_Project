@@ -25,6 +25,7 @@ git clone https://github.com/IvanNaum/Web_Project.git
 
 ```
 cd ./Web_Project
+pip install -r requirements.txt
 ```
 
 2. Создаем .env файл с параметром SECRET_KEY=<СЕКРЕТНОЕ СЛОВО>
