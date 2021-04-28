@@ -14,3 +14,5 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
 sessions = []
+
+from app import models
