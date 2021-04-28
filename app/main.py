@@ -24,7 +24,7 @@ def find_none_session():
 @login_required
 def get_data():
     sess = find_session(current_user)
-    if sess.user2:
+    if sess and sess.user2:
         board, color, step_color = sess.get_pieces(current_user)
         emit('data', {'board': board,
                       'user_color': color,

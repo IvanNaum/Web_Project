@@ -26,12 +26,12 @@ class RegisterForm(FlaskForm):
     )
     submit = SubmitField('Зарегистрироваться')
 
-    def validate_email(self):
+    def check_email(self):
         if User.query.filter_by(email=self.email.data).first():
             return False
         return True
 
-    def validate_login(self):
+    def check_login(self):
         if User.query.filter_by(login=self.login.data).first():
             return False
         return True

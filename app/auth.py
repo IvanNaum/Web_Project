@@ -34,9 +34,9 @@ def register():
         email = form.email.data
         password = form.password.data
 
-        if not form.validate_email():
+        if not form.check_email():
             flash('Этот email уже занят')
-        elif not form.validate_login():
+        elif not form.check_login():
             flash('Этот логин уже занят')
         else:
             hash_password = generate_password_hash(password)

@@ -10,7 +10,6 @@
 <body>
     <div class="flex items-center justify-center flex-col h-screen mx-auto">
         <h1 id="message"></h1>
-        {% if current_user.is_authenticated %}
         <div class="border-2 border-black">
             {% for i in range(8) %}
             <div class="flex">
@@ -24,9 +23,6 @@
             </div>
             {% endfor %}
         </div>
-        {% else %}
-        Вы не авторизованный пользователь
-        {% endif %}
     </div>
 
     <!-- Подключение Socket.io -->
