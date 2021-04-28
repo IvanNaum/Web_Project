@@ -12,7 +12,6 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        login, password = form.login.data, form.password.data
         login, password = request.form.get('login'), request.form.get('password')
 
         user = User.query.filter_by(login=login).first()

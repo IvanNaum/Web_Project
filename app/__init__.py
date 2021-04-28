@@ -16,3 +16,5 @@ login_manager = LoginManager(app)
 sessions = []
 
 from app import models, auth, main
+
+db.create_all()
