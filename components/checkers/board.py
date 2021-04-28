@@ -8,7 +8,7 @@ from components.checkers.piece import Piece
 class Board:
     def __init__(self):
         self.board = [[None] * constants.SIZE for _ in range(constants.SIZE)]
-        self.color = constants.WHITE
+        self.color = constants.WHITE  # текущий цвет
 
         # заполнение поля
         for y in range(constants.SIZE):
@@ -44,6 +44,7 @@ class Board:
         return from_y + from_x == to_y + to_x or from_y - from_x == to_y - to_x
 
     def check_color(self, y, x):
+        """Проверяет, совпадает ли цвет фигуры на позиции (y, x) с текущим цветом"""
         if not self.check_piece(y, x):
             return False
 
@@ -52,6 +53,7 @@ class Board:
 
     @staticmethod
     def get_dir_y(from_y, to_y):
+        """Возвращает 1 или -1 в зависимости от направления движения по оси Y"""
         return int(copysign(1, to_y - from_y))
 
     def get_possible_moves(self, from_y, from_x):
@@ -62,26 +64,34 @@ class Board:
 
         piece: Piece = self.board[from_y][from_x]
 
+        # проходимся по всей доске
         for to_y, to_x in product(range(constants.SIZE), repeat=2):
             if (
+                    # позиция (to_y, to_x) должна быть пустой
                     self.check_piece(to_y, to_x)
                     or not self.check_same_diagonal(from_y, from_x, to_y, to_x)
                     or (from_y, from_x) == (to_y, to_x)
             ):
                 continue
 
+            # для простой шашки
             if not piece.is_queen:
+                # тихий ход
                 if abs(to_y - from_y) == 1:
                     dir_y = self.get_dir_y(from_y, to_y)
+                    # тихий ход производится только вперёд
                     if dir_y == piece.dir_y:
                         possible_moves.append((to_y, to_x))
 
+                # ударный ход
                 elif abs(to_y - from_y) == 2:
                     mid_y = (to_y + from_y) // 2
                     mid_x = (to_x + from_x) // 2
+                    # фигура соперника должна быть между (from_y, from_x) и (to_y, to_x)
                     if self.check_piece(mid_y, mid_x) and not self.check_color(mid_y, mid_x):
                         possible_moves.append((to_y, to_x))
 
+            # для дамки
             else:
                 pass
                 # TODO
@@ -89,6 +99,7 @@ class Board:
         return possible_moves
 
     def get_eaten_pieces(self, from_y, from_x, to_y, to_x):
+        """Возвращает позиции съёденных фигур по пути из (from_y, from_x) в (to_y, to_x)"""
         eaten_pieces = []
         if abs(to_y - from_y) == 2:
             mid_y = (to_y + from_y) // 2
@@ -117,6 +128,10 @@ class Board:
             return winner
 
     def check_win(self):
+        """
+        Возвращает цвет противника, если фигуры текущего цвета не могут сделать ход. 
+        Иначе возвращает None
+        """
         for from_y, from_x in product(range(constants.SIZE), repeat=2):
             if self.check_color(from_y, from_x):
                 for to_y, to_x in product(range(constants.SIZE), repeat=2):
@@ -126,6 +141,7 @@ class Board:
         return self.dif_color()
 
     def dif_color(self):
+        """Возвращает противоположный текущему цвет"""
         return constants.WHITE if self.color == constants.BLACK else constants.BLACK
 
     def change_color(self):
