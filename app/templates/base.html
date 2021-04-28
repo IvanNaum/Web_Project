@@ -10,9 +10,9 @@
   <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 
   {% if title %}
-  <title>{{ title }}</title>
+    <title>Flask Checkers | {{ title }}</title>
   {% else %}
-  <title>Flask Checkers</title>
+    <title>Flask Checkers</title>
   {% endif %}
 
   {% block head %}{% endblock %}
@@ -36,6 +36,29 @@
       {% endfor %}
     {% endwith %}
   {%- endmacro %}
+
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <div class="fs-5">
+          Flask Checkers
+        </div>
+        {% if not current_user.is_authenticated %}
+          <div>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-light" style="margin-right: 1rem">Вход</a>
+            <a href="{{ url_for('register') }}" class="btn btn-warning">Регистрация</a>
+          </div>
+        {% else %}
+          <div class="fs-4">
+            {{ current_user.login }}
+          </div>
+          <div>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">Выход</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </header>
 
   <div class='container'>{% block content %}{% endblock %}</div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
