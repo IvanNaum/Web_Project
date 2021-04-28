@@ -1,4 +1,4 @@
-from flask import request, render_template, flash, redirect
+from flask import request, render_template, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -7,7 +7,7 @@ from app.models import User
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login_page():
+def login():
     if request.method == 'POST':
         login, password = request.form.get('login'), request.form.get('password')
 
@@ -28,7 +28,7 @@ def login_page():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def register_page():
+def register():
     if request.method == 'POST':
         login = request.form.get('login')
         email = request.form.get('email')
@@ -45,16 +45,16 @@ def register_page():
             db.session.add(user)
             db.session.commit()
 
-            return redirect('/login')
+            return redirect(url_for('login'))
 
     return render_template('register.html')
 
 
-@app.route('/logout', methods=['GET'])
+@app.route('/logout')
 @login_required
-def logout_page():
+def logout():
     logout_user()
-    return redirect('/')
+    return redirect(url_for('index'))
 
 
 @login_manager.user_loader

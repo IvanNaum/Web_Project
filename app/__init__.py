@@ -12,3 +12,5 @@ socket = SocketIO(app)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
+
+sessions = []

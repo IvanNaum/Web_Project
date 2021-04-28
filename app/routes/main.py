@@ -4,5 +4,5 @@ from app import app
 
 
 @app.route('/')
-def main_page():
+def index():
     return render_template('index.html')

@@ -2,8 +2,8 @@ from flask import render_template
 from flask_login import current_user
 from flask_socketio import emit
 
-from app.constants import *
 from app import socket, app, sessions
+from app.constants import *
 from app.models import User
 from app.classes.session import Session
 
@@ -66,4 +66,4 @@ def game_page():
             # Если нет, создаем новую комнату
             sessions.append(Session(User.query.filter_by(id=current_user.id).first()))
 
-    return render_template('game.html', current_user=current_user)
+    return render_template('game.html')
