@@ -1,5 +1,5 @@
 from flask import render_template
-from flask_login import current_user
+from flask_login import current_user, login_required
 from flask_socketio import emit
 
 from app import socket, app, sessions
@@ -21,10 +21,8 @@ def find_none_session():
 
 
 @socket.on('data')
+@login_required
 def get_data():
-    if not current_user.is_authenticated:
-        return
-
     sess = find_session(current_user)
     if sess.user2:
         board, color, step_color = sess.get_pieces(current_user)
@@ -38,6 +36,7 @@ def get_data():
 
 
 @socket.on('step')
+@login_required
 def step(data):
     sess = find_session(current_user)
     if sess:
@@ -47,10 +46,8 @@ def step(data):
 
 
 @app.route('/game')
-def game_page():
-    if not current_user.is_authenticated:
-        return
-
+@login_required
+def game():
     sess = find_session(current_user)
     if sess and sess.user1 == current_user:
         sessions.remove(sess)
