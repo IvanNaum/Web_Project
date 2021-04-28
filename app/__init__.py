@@ -16,3 +16,4 @@ login_manager = LoginManager(app)
 sessions = []
 
 from app import models
+from app.routes import auth, game, main
