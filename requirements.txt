@@ -3,3 +3,4 @@ flask-login==0.5.0
 flask-socketio==5.0.1
 flask-sqlalchemy==2.5.1
 eventlet==0.30.2
+python-dotenv==0.17.0

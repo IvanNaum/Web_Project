@@ -2,9 +2,10 @@ from flask import render_template
 from flask_login import current_user
 from flask_socketio import emit
 
-import constants
-from components import socket, app, sessions, User
-from components.checkers.session import Session
+from app.constants import *
+from app import socket, app, sessions
+from app.models import User
+from app.classes.session import Session
 
 
 def find_session(user):
@@ -29,8 +30,8 @@ def get_data():
         board, color, step_color = sess.get_pieces(current_user)
         emit('data', {'board': board,
                       'user_color': color,
-                      'black': constants.BLACK,
-                      'white': constants.WHITE,
+                      'black': BLACK,
+                      'white': WHITE,
                       'step_color': step_color})
     else:
         emit('data', {'message': 'Противник ещё не найден'})

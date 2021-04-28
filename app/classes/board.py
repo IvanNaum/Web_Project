@@ -1,25 +1,25 @@
 from itertools import product
 from math import copysign
 
-import constants
-from components.checkers.piece import Piece
+from app.constants import *
+from app.classes.piece import Piece
 
 
 class Board:
     def __init__(self):
-        self.board = [[None] * constants.SIZE for _ in range(constants.SIZE)]
-        self.color = constants.WHITE  # текущий цвет
+        self.board = [[None] * SIZE for _ in range(SIZE)]
+        self.color = WHITE  # текущий цвет
 
         # заполнение поля
-        for y in range(constants.SIZE):
+        for y in range(SIZE):
             if y in range(3):
-                color = constants.WHITE
-            elif y in range(5, constants.SIZE):
-                color = constants.BLACK
+                color = WHITE
+            elif y in range(5, SIZE):
+                color = BLACK
             else:
                 continue
 
-            for x in range(y % 2, constants.SIZE, 2):
+            for x in range(y % 2, SIZE, 2):
                 self.board[y][x] = Piece(color)
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Board:
         piece: Piece = self.board[from_y][from_x]
 
         # проходимся по всей доске
-        for to_y, to_x in product(range(constants.SIZE), repeat=2):
+        for to_y, to_x in product(range(SIZE), repeat=2):
             if (
                     # позиция (to_y, to_x) должна быть пустой
                     self.check_piece(to_y, to_x)
@@ -132,9 +132,9 @@ class Board:
         Возвращает цвет противника, если фигуры текущего цвета не могут сделать ход. 
         Иначе возвращает None
         """
-        for from_y, from_x in product(range(constants.SIZE), repeat=2):
+        for from_y, from_x in product(range(SIZE), repeat=2):
             if self.check_color(from_y, from_x):
-                for to_y, to_x in product(range(constants.SIZE), repeat=2):
+                for to_y, to_x in product(range(SIZE), repeat=2):
                     if self.can_move(from_y, from_x, to_y, to_x):
                         return
 
@@ -142,7 +142,7 @@ class Board:
 
     def dif_color(self):
         """Возвращает противоположный текущему цвет"""
-        return constants.WHITE if self.color == constants.BLACK else constants.BLACK
+        return WHITE if self.color == BLACK else BLACK
 
     def change_color(self):
         self.color = self.dif_color()
